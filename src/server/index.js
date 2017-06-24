@@ -1,15 +1,10 @@
-require('dotenv').config({path: path.resolve(`${__dirname}/../../.env`)})
 import express from 'express';
 import session from 'express-session'
 import path from 'path';
-import ShopifyToken from 'shopify-token';
+import routes from './routes';
 
-const shopifyToken = new ShopifyToken({
-  apiKey: process.env.SHOPIFY_APP_API_KEY,
-  sharedSecret: process.env.SHOPIFY_APP_SECRET,
-  redirectUri: process.env.SHOPIFY_REDIRECT_URI,
-})
-
+// `${__dirname}/../../.env`
+import config from './config';
 
 let app =  express();
 app.set('view engine', 'ejs');
@@ -17,60 +12,29 @@ app.set('view engine', 'ejs');
 app.use(session({secret: 'keyboard cat'}));
 app.use(express.static(`${__dirname}/../public`))
 
-// Shopify Authentication
-app.get('/install', (req, res)=> {
-  res.render(`${__dirname}/install`)
-})
+// Public React App
+app.get('/', routes.root)
+// Unless it's needs to be private and passed from Server to React App
+app.get('/install', routes.install)
+app.get('/shopify_auth', routes.shopify_auth)
+app.get('/callback', routes.callback)
+app.get('/products', routes.products)
+app.get('/products:/id', routes.products)
 
-// This function initializes the Shopify OAuth Process
-// The template in views/embedded_app_redirect.ejs is rendered
-app.get('/shopify_auth', (req, res) => {
-  const shop = req.query.shop;
-  req.session.shop = req.query.shop;
-  if(shop){
-    const nonce = shopifyToken.generateNonce();
-    const scopes = 'read_products,read_customers,read_orders'
-    const authUrl = shopifyToken.generateAuthUrl(shop, scopes, nonce)
-    res.render(`${__dirname}/redirect`, { authUrl })
-  } else {
-    res.status(400).send('Bad request: No shop param specified')
-  }
-})
-
-
-// After the users clicks 'Install' on the Shopify website, they are redirected here
-// Shopify provides the app the is authorization_code, which is exchanged for an access token
-app.get('/callback', (req, res) => {
-  const verified = shopifyToken.verifyHmac(req.query);
-  console.log(verified)
-  if(verified){
-    shopifyToken.getAccessToken(req.query.shop, req.query.code).then((token) => {
-      req.session.token = token;
-      console.log(req.session)
-      res.redirect('/');
-    }).catch((err) => console.err(err));
-  }
-})
-
-// React
 //The react app handles the rest of the urls
-app.get('/', (req, res) => {
-  console.log(req.session)
-  if (req.session.token) {
-    res.render(`${__dirname}/index`, {
-      apiKey: process.env.SHOPIFY_APP_API_KEY,
-      shopOrigin: req.session.shop
-    })
-  } else {
-    res.redirect('/install');
-  }
-})
 
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, ()=>{
-  console.log(`App started!`)
-  console.log(`Visit http://localhost:${PORT}`)
-  console.log(`or ${process.env.SHOPIFY_REDIRECT_URI.replace("/callback", "")}`)
-  console.log(`To view app!`)
+
+
+app.listen(config.PORT, ()=>{
+  console.log(config.logger("green"),`\nApp started!`)
+  console.log(config.logger("bright"),`--------------------`)
+  console.log(config.logger("bright"),`Serving on:`)
+  console.log(config.logger("cyan"),` http://localhost:${config.PORT}`)
+  console.log(config.logger("cyan"),` ${config.SHOPIFY_REDIRECT_URI.replace("/callback", "")}\n`)
+  console.log(config.logger("bright"),`Server Routes:`)
+  Object.keys(routes).map((route) => {
+    console.log(config.logger("blue"),`  /${route.replace("root","")}`)
+  })
+  console.log(config.logger("bright"),`--------------------`)
 })

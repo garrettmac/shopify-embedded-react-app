@@ -5,48 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Install App</title>
-    <link rel="stylesheet" href="https://sdks.shopifycdn.com/polaris/1.0.2/polaris.css">
+
+
     <style>
-      .p-3 {
-        padding: 30px;
-      }
+    body {
+font-family: "ProximaNovaLight", "Helvetica Neue", Helvetica, Arial, sans-serif;
+background-color: #f2f7fa;
+}
+
+.login-container {
+text-align: center;
+margin-top: 100px;
+padding: 20px;
+}
+
+.login-container article, .login-container aside, .login-container footer, .login-container header, .login-container hgroup, .login-container main, .login-container section {
+display: block;
+}
+.login-container h1 {
+font-weight: 300;
+font-size: 40px;
+margin-bottom: 10px;
+}
+.login-container h1 {
+display: block;
+-webkit-margin-before: 0.67em;
+-webkit-margin-after: 0.67em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+}
+.login-container .subhead {
+font-size: 17px;
+line-height: 32px;
+font-weight: 300;
+color: #969A9C;
+}
+.login-container p {
+display: block;
+-webkit-margin-before: 1em;
+-webkit-margin-after: 1em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+}
+.login-container label {
+cursor: default;
+}
+.login-container .container__form {
+width: 400px;
+margin: auto;
+}
+.login-container form {
+display: block;
+margin-top: 0em;
+}
+.login-container input {
+width: 300px;
+height: 50px;
+padding: 10px;
+border: 1px solid #479CCf;
+color: #575757;
+background-color: #ffffff;
+box-sizing: border-box;
+border-radius: 4px 0 0 4px;
+font-size: 18px;
+float: left;
+-webkit-rtl-ordering: logical;
+user-select: text;
+cursor: auto;
+-webkit-appearance: textfield;
+}
+.login-container button {
+-webkit-appearance: button;
+}
+.login-container button {
+text-rendering: auto;
+letter-spacing: normal;
+word-spacing: normal;
+text-transform: none;
+text-indent: 0px;
+display: inline-block;
+margin: 0em;
+font: 11px system-ui;
+}
+.login-container button {
+color: #ffffff;
+background-color: #3793cb;
+width: 100px;
+height: 50px;
+padding: 10px 20px 10px 20px;
+box-sizing: border-box;
+border: none;
+text-shadow: 0 1px 0 #3188bc;
+font-size: 18px;
+cursor: pointer;
+border-radius: 0 4px 4px 0;
+float: right;
+}
+
     </style>
 </head>
 <body>
-    <div class="p-3">
-      <div class="Polaris-Layout">
-        <div class="Polaris-Layout__Section">
-          <div class="Polaris-Card">
-            <div class="Polaris-Card__Header">
-                <h2 class="Polaris-Heading">Install the app</h2>
-            </div>
-            <form action="/shopify_auth" method="GET">
-              <div class="Polaris-Card__Section">
-                <div class="Polaris-FormLayout">
-                  <div class="Polaris-FormLayout__Item">
-                    <div class="">
-                      <div class="Polaris-Labelled__LabelWrapper">
-                        <div class="Polaris-Label">
+
+            <!-- <form action="/shopify_auth" method="GET">
                           <label  for="shop" class="Polaris-Label__Text">Store name</label>
                         </div>
                       </div>
-                      <div class="Polaris-TextField">
-                        <input name="shop" id="shop" value="" placeholder="my-owesome-store" class="Polaris-TextField__Input" aria-labelledby="shopLabel shopSuffix" aria-invalid="false">
-                        <div class="Polaris-TextField__Suffix" id="shopSuffix">.myshopify.com</div>
-                        <div class="Polaris-TextField__Backdrop"></div>
-                      </div>
-                  </div>
-                  </div>
-                  <div class="Polaris-FormLayout__Item">
-                    <button type="submit" class="Polaris-Button Polaris-Button--primary Polaris-Button--sizeLarge"><span class="Polaris-Button__Content"><span>Install</span></span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-  </div>
+
+                        <input name="shop" id="shop" value="" class="Polaris-TextField__Input" aria-labelledby="shopLabel shopSuffix" aria-invalid="false">
+                        <div  id="shopSuffix">.myshopify.com</div> -->
+
+
+        <!-- this is a clone installation page of what shopify uses.
+        (odd they make users enter the fill url)
+        See https://script-editor.shopifyapps.com/login
+        -->
+        <main class="login-container" role="main">
+            <header>
+              <img width="100"
+                   height="100" src="./images/logo.png">
+              <h1>Shopify Plus Apps&nbsp;–&nbsp;Installation</h1>
+              <p class="subhead">
+                <label for="shop">Enter your shop domain to log in or install this app.</label>
+              </p>
+            </header>
+
+            <div class="container__form">
+              <form action="/shopify_auth" method="GET">
+                <input type="text" name="shop" id="shop" placeholder="example.myshopify.com">
+                <button type="submit">Install</button>
+              </form>
+            </div>
+          </main>
 </body>
 </html>

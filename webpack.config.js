@@ -1,6 +1,7 @@
 
 var path = require('path');
 var webpack = require('webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -19,6 +20,7 @@ module.exports = {
   devtool: 'source-map',
   module:{
     loaders:[
+      { test: /\.(jpe?g|gif|png|svg|woff|ttf|wav|mp3)$/, loader: "file" },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -27,11 +29,11 @@ module.exports = {
       {
         test:/\.scss$/,
         use: [
-          { loader: "style-loader" }, 
+          { loader: "style-loader" },
           {
             loader: "css-loader",
             options: { minimize: true }
-          }, 
+          },
           { loader: "sass-loader" }
         ]
       }
@@ -41,6 +43,9 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"production"'
     }),
+    new CopyWebpackPlugin([
+      {from:"src/static/assets/images",to:"images"}
+    ]),
     new webpack.optimize.CommonsChunkPlugin({name:'vendor', filename:'vendor.bundle.js'}),
   ]
 }
