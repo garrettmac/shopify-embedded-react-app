@@ -23,7 +23,7 @@ app.get('/install', (req, res)=> {
 })
 
 // This function initializes the Shopify OAuth Process
-// The template in views/embedded_app_redirect.ejs is rendered 
+// The template in views/embedded_app_redirect.ejs is rendered
 app.get('/shopify_auth', (req, res) => {
   const shop = req.query.shop;
   req.session.shop = req.query.shop;
@@ -67,7 +67,10 @@ app.get('/', (req, res) => {
 })
 
 
-const PORT = process.env.PORT || 3000; 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, ()=>{
-  console.log(`Listening on port ${PORT}`)
-}) 
+  console.log(`App started!`)
+  console.log(`Visit http://localhost:${PORT}`)
+  console.log(`or ${process.env.SHOPIFY_REDIRECT_URI.replace("/callback", "")}`)
+  console.log(`To view app!`)
+})
